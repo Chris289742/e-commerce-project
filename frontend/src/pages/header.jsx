@@ -1,102 +1,105 @@
-import { useState, useEffect, useRef, forwardRef } from "react";
-import { Link, Outlet } from "react-router-dom";
-
-const Dropdown = forwardRef((props, ref) => {
-  return (
-    <div ref={ref}>
-      <ul className="flex flex-col gap-4 dropDown">
-        <li>
-          <a href="">Women</a>
-        </li>
-        <li>
-          <a href="">Men</a>
-        </li>
-      </ul>
-    </div>
-  );
-});
-
-Dropdown.displayName = "Dropdown";
+import { useState, useEffect } from "react";
+import { Link, NavLink } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// awesomeFont
+import {
+  faMagnifyingGlass,
+  faUser,
+  faBagShopping,
+  faHouse,
+  faAngleLeft,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function Header() {
-  const [open, setOpen] = useState(false);
-  const shopLinkRef = useRef(null);
-  const dropdownRef = useRef(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        shopLinkRef.current &&
-        !shopLinkRef.current.contains(event.target) &&
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target)
-      ) {
-        setOpen(false);
-      }
-    };
-
-    if (open) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [open]);
+  const [visible, setVisible] = useState(false);
 
   return (
     <>
       <header className="bg-white mt-6">
         <div className="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-4 sm:px-6 lg:px-8">
-          <Link className="block text-teal-600" to="/home">
-            <i class="fa-solid fa-house"></i>
+          {/* Home link */}
+          <NavLink className="block text-teal-600" to="/">
+            <FontAwesomeIcon
+              icon={faHouse}
+              className="text-[30px] sm:text-base"
+            />
             <span className="sr-only">Home</span>
-          </Link>
-
-          <div className="flex flex-1 items-center justify-end md:justify-between">
-            <nav aria-label="Global" className="hidden md:block">
+          </NavLink>
+          {/* Shop & About & Contact*/}
+          <div className="flex flex-1 items-center justify-end sm:justify-between">
+            <nav aria-label="Global" className="hidden sm:block">
               <ul className="flex items-center gap-6 text-sm">
-                <li>
-                  <Link
-                    ref={shopLinkRef} // ref is added on html tags
-                    className="text-gray-500 transition hover:text-gray-500/75"
-                    to="/shop"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setOpen((prev) => !prev);
-                    }}
-                  >
-                    {" "}
-                    Shop{" "}
-                  </Link>
-                </li>
+                {/* header items */}
 
-                <li>
-                  <Link
-                    className="text-gray-500 transition hover:text-gray-500/75"
-                    to="/about"
-                  >
-                    {" "}
-                    About{" "}
-                  </Link>
-                </li>
+                <NavLink
+                  className="text-gray-500 transition hover:text-gray-500/75 flex flex-col items-center"
+                  to="/shop"
+                >
+                  Shop
+                  <hr className="w-2/4 border-none h-[1.5px] bg-gray-500 transition hidden" />
+                </NavLink>
+
+                <NavLink
+                  className="text-gray-500 transition hover:text-gray-500/75 flex flex-col items-center"
+                  to="/about"
+                >
+                  {" "}
+                  About{" "}
+                  <hr className="w-2/4 border-none h-[1.5px] bg-gray-500 transition hidden" />
+                </NavLink>
+
+                <NavLink
+                  className="text-gray-500 transition hover:text-gray-500/75 flex flex-col items-center"
+                  to="/contact"
+                >
+                  {" "}
+                  Contact{" "}
+                  <hr className="w-2/4 border-none h-[1.5px] bg-gray-500 transition hidden" />
+                </NavLink>
               </ul>
             </nav>
 
             <div className="flex items-center gap-4">
-              <div className="sm:flex sm:gap-6">
-                <a>
-                  <i class="fa-solid fa-user"></i>
-                </a>
+              <div className="sm:flex sm:gap-7 hidden">
+                {/* Search */}
+                <Link>
+                  <FontAwesomeIcon icon={faMagnifyingGlass} className="fa-lg" />
+                </Link>
 
-                <a>
-                  <i class="fa-solid fa-bag-shopping"></i>
-                </a>
+                {/* Profile */}
+                <div className="group relative">
+                  <FontAwesomeIcon icon={faUser} className="fa-lg" />
+                  <div className="group-hover:block hidden absolute dropdown-menu right-0 top-2 pt-4">
+                    <div className="flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded">
+                      <p className="cursor-pointer hover:text-black hover:underline">
+                        My Profile
+                      </p>
+                      <p className="cursor-pointer hover:text-black hover:underline">
+                        Orders
+                      </p>
+                      <p className="cursor-pointer hover:text-black hover:underline">
+                        Logout
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* shopping cart */}
+                <Link to="/cart" className="relative">
+                  <FontAwesomeIcon icon={faBagShopping} className="fa-lg" />
+                  <p className="absolute right-[-6px] bottom-[-6px] w-4 text-center leading-4 bg-teal-400 text-black aspect-square rounded-full text-[8px]">
+                    10
+                  </p>
+                </Link>
               </div>
 
-              <button className="block rounded-sm bg-gray-100 p-2.5 text-gray-600 transition hover:text-gray-600/75 md:hidden">
+              {/* small screen ... */}
+              <button
+                onClick={() => {
+                  setVisible(true);
+                }}
+                className="block rounded-sm bg-gray-100 p-2.5 text-gray-600 transition hover:text-gray-600/75 sm:hidden"
+              >
                 <span className="sr-only">Toggle menu</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -115,10 +118,62 @@ export default function Header() {
               </button>
             </div>
           </div>
+
+          {/* side bar menu */}
+          <div
+            className={`border-l border-gray-200 fixed top-0 right-0 h-screen z-50 bg-white overflow-hidden transition-all duration-300 ${
+              visible ? "w-3/4 sm:w-1/3 p-2" : "w-0 p-0"
+            }`}
+          >
+            <div className="flex flex-col text-gray-600">
+              <div
+                onClick={() => {
+                  setVisible(false);
+                }}
+                className="flex items-center gap-4 p-3 cursor-pointer"
+              >
+                <FontAwesomeIcon icon={faAngleLeft} />
+                <p>Back</p>
+              </div>
+              <NavLink
+                onClick={() => {
+                  setVisible(false);
+                }}
+                className="py-2 pl-6 border-t border-gray-200"
+                to="/"
+              >
+                Home
+              </NavLink>
+              <NavLink
+                onClick={() => {
+                  setVisible(false);
+                }}
+                className="py-2 pl-6 border-t border-gray-200"
+                to="/shop"
+              >
+                Shop
+              </NavLink>
+              <NavLink
+                onClick={() => {
+                  setVisible(false);
+                }}
+                className="py-2 pl-6 border-t border-gray-200"
+                to="/about"
+              >
+                About
+              </NavLink>
+              <NavLink
+                onClick={() => {
+                  setVisible(false);
+                }}
+                className="py-2 pl-6 border-t border-b border-gray-200"
+                to="/contact"
+              >
+                Contact
+              </NavLink>
+            </div>
+          </div>
         </div>
-        {open && <Dropdown ref={dropdownRef} />}
-        <Outlet />
-        <hr />
       </header>
     </>
   );
