@@ -1,5 +1,10 @@
 import { Link, Outlet } from "react-router-dom";
 import Hero from "../components/hero";
+import LatestCollection from "../components/LatestCollection";
+import BestSeller from "../components/BestSeller";
+import OurPolicy from "../components/OurPolicy";
+import Footer from "../components/Footer";
+
 function Banner() {
   return (
     <section className="bg-white lg:grid lg:h-screen lg:place-content-center dark:bg-gray-900">
@@ -42,6 +47,9 @@ function Home() {
   return (
     <>
       <Hero />
+      <LatestCollection />
+      <BestSeller />
+      <OurPolicy />
     </>
   );
 }

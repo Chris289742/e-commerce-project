@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { assets } from "../assets/assets";
 // awesomeFont
 import {
   faMagnifyingGlass,
@@ -9,20 +10,26 @@ import {
   faHouse,
   faAngleLeft,
 } from "@fortawesome/free-solid-svg-icons";
+import { ShopContext } from "../context/ShopContext";
 
 export default function Header() {
   const [visible, setVisible] = useState(false);
 
+  const { setShowSearch, showSearch, getCartCount } = useContext(ShopContext);
+
+  const location = useLocation();
+
   return (
     <>
-      <header className="bg-white mt-6">
+      <header className="bg-white pt-6">
         <div className="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-4 sm:px-6 lg:px-8">
           {/* Home link */}
           <NavLink className="block text-teal-600" to="/">
-            <FontAwesomeIcon
+            {/* <FontAwesomeIcon
               icon={faHouse}
               className="text-[30px] sm:text-base"
-            />
+            /> */}
+            <img src={assets.logo_icon} className="h-14" alt="" />
             <span className="sr-only">Home</span>
           </NavLink>
           {/* Shop & About & Contact*/}
@@ -32,7 +39,7 @@ export default function Header() {
                 {/* header items */}
 
                 <NavLink
-                  className="text-gray-500 transition hover:text-gray-500/75 flex flex-col items-center"
+                  className="text-gray-500  transition hover:text-gray-500/75 flex flex-col items-center"
                   to="/shop"
                 >
                   Shop
@@ -40,7 +47,7 @@ export default function Header() {
                 </NavLink>
 
                 <NavLink
-                  className="text-gray-500 transition hover:text-gray-500/75 flex flex-col items-center"
+                  className="text-gray-500  transition hover:text-gray-500/75 flex flex-col items-center"
                   to="/about"
                 >
                   {" "}
@@ -49,7 +56,7 @@ export default function Header() {
                 </NavLink>
 
                 <NavLink
-                  className="text-gray-500 transition hover:text-gray-500/75 flex flex-col items-center"
+                  className="text-gray-500  transition hover:text-gray-500/75 flex flex-col items-center"
                   to="/contact"
                 >
                   {" "}
@@ -62,9 +69,14 @@ export default function Header() {
             <div className="flex items-center gap-4">
               <div className="sm:flex sm:gap-7 hidden">
                 {/* Search */}
-                <Link>
-                  <FontAwesomeIcon icon={faMagnifyingGlass} className="fa-lg" />
-                </Link>
+
+                <FontAwesomeIcon
+                  onClick={() => setShowSearch(!showSearch)}
+                  icon={faMagnifyingGlass}
+                  className={`fa-lg ${
+                    location.pathname === "/shop" ? "cursor-pointer" : ""
+                  }`}
+                />
 
                 {/* Profile */}
                 <div className="group relative">
@@ -88,7 +100,7 @@ export default function Header() {
                 <Link to="/cart" className="relative">
                   <FontAwesomeIcon icon={faBagShopping} className="fa-lg" />
                   <p className="absolute right-[-6px] bottom-[-6px] w-4 text-center leading-4 bg-teal-400 text-black aspect-square rounded-full text-[8px]">
-                    10
+                    {getCartCount()}
                   </p>
                 </Link>
               </div>

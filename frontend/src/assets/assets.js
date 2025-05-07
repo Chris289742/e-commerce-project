@@ -55,6 +55,8 @@ import p_img51 from "./p_img51.png";
 import p_img52 from "./p_img52.png";
 
 import hero3_img from "./hero3_img.jpg";
+import exchange_icon2 from "./exchange_icon2.png";
+import logo_icon from "./logo_icon.png";
 
 import logo from "./logo.png";
 import hero_img from "./hero_img.png";
@@ -76,12 +78,14 @@ import stripe_logo from "./stripe_logo.png";
 import cross_icon from "./cross_icon.png";
 
 export const assets = {
+  logo_icon,
   logo,
   hero_img,
   hero3_img,
   cart_icon,
   dropdown_icon,
   exchange_icon,
+  exchange_icon2,
   profile_icon,
   quality_icon,
   search_icon,
