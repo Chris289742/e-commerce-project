@@ -15,7 +15,22 @@ import { ShopContext } from "../context/ShopContext";
 export default function Header() {
   const [visible, setVisible] = useState(false);
 
-  const { setShowSearch, showSearch, getCartCount } = useContext(ShopContext);
+  const logout = () => {
+    navigate("/login");
+    localStorage.removeItem("token");
+    setToken("");
+    setCartItems({});
+  };
+
+  const {
+    setShowSearch,
+    showSearch,
+    getCartCount,
+    navigate,
+    token,
+    setToken,
+    setCartItems,
+  } = useContext(ShopContext);
 
   const location = useLocation();
 
@@ -80,20 +95,33 @@ export default function Header() {
 
                 {/* Profile */}
                 <div className="group relative">
-                  <FontAwesomeIcon icon={faUser} className="fa-lg" />
-                  <div className="group-hover:block hidden absolute dropdown-menu right-0 top-2 pt-4">
-                    <div className="flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded">
-                      <p className="cursor-pointer hover:text-black hover:underline">
-                        My Profile
-                      </p>
-                      <p className="cursor-pointer hover:text-black hover:underline">
-                        Orders
-                      </p>
-                      <p className="cursor-pointer hover:text-black hover:underline">
-                        Logout
-                      </p>
+                  <FontAwesomeIcon
+                    onClick={() => (token ? null : navigate("/login"))}
+                    icon={faUser}
+                    className="fa-lg cursor-pointer"
+                  />
+                  {/* Dropdown */}
+                  {token && (
+                    <div className="group-hover:block hidden absolute dropdown-menu right-0 top-4 pt-4">
+                      <div className="flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded">
+                        <p className="cursor-pointer hover:text-black hover:underline">
+                          My Profile
+                        </p>
+                        <p
+                          onClick={() => navigate("/orders")}
+                          className="cursor-pointer hover:text-black hover:underline"
+                        >
+                          Orders
+                        </p>
+                        <p
+                          onClick={logout}
+                          className="cursor-pointer hover:text-black hover:underline"
+                        >
+                          Logout
+                        </p>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
 
                 {/* shopping cart */}
@@ -105,7 +133,7 @@ export default function Header() {
                 </Link>
               </div>
 
-              {/* small screen ... */}
+              {/* for small screen ... */}
               <button
                 onClick={() => {
                   setVisible(true);

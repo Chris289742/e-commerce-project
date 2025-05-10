@@ -57,6 +57,7 @@ import p_img52 from "./p_img52.png";
 import hero3_img from "./hero3_img.jpg";
 import exchange_icon2 from "./exchange_icon2.png";
 import logo_icon from "./logo_icon.png";
+import linepay_logo_tw from "./linepay-logo-tw.png";
 
 import logo from "./logo.png";
 import hero_img from "./hero_img.png";
@@ -99,6 +100,7 @@ export const assets = {
   razorpay_logo,
   stripe_logo,
   cross_icon,
+  linepay_logo_tw,
 };
 
 export const products = [

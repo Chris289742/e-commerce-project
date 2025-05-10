@@ -17,7 +17,7 @@ const Shop = () => {
     const filtered = applyFilter();
     const sorted = sortProduct(filtered, currentSort);
     setFilterProducts(sorted);
-  }, [category, subCategory, currentSort, search, showSearch]);
+  }, [category, subCategory, currentSort, search, showSearch, products]);
 
   const toggleCategory = (e) => {
     const value = e.target.value;

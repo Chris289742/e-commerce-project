@@ -1,27 +1,29 @@
-const express = require("express");
-const fs = require("fs");
+import express from "express";
+import cors from "cors";
+import "dotenv/config";
+import connectDB from "./config/mongodb.js";
+import connectCloudinary from "./config/cloudinary.js";
+import userRouter from "./routes/userRoute.js";
+import productRouter from "./routes/productRoute.js";
 
 const app = express();
-const port = 3000;
+const PORT = process.env.PORT || 4000;
+
+connectDB();
+connectCloudinary();
+
+// Middlewares
+app.use(express.json()); // for parsing application/json
+app.use(cors());
+
+//api endpoints
+app.use("/api/user", userRouter);
+app.use("/api/product", productRouter);
 
 app.get("/", (req, res) => {
-  console.log(req.headers);
-  res.send("<h1>Hello World!</h1>");
+  res.send("Hello World!");
 });
 
-// Middleware to parse JSON bodies
-app.use(express.json());
-// Middleware to parse URL-encoded bodies (form data)
-app.use(express.urlencoded({ extended: true }));
-
-// Example POST route
-app.post("/submit", (req, res) => {
-  console.log("Received POST request on /submit");
-  console.log("Request Body:", req.body);
-  // Process the data from req.body here
-  res.status(200).json({ message: "Data received", receivedData: req.body });
-});
-
-app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
